@@ -1,8 +1,8 @@
 # Skaarj Pupae
 
 <img src="https://img.shields.io/badge/lc--version-v50-000" /></a>
-[![Thunderstore Version](https://img.shields.io/thunderstore/v/DreWulff/SkaarjPupae?style=for-the-badge&logo=thunderstore&logoColor=white)](https://thunderstore.io/c/lethal-company/p/XuXiaolan/TheGiantSpecimens/)
-[![Thunderstore Downloads](https://img.shields.io/thunderstore/dt/DreWulff/SkaarjPupae?style=for-the-badge&logo=thunderstore&logoColor=white)](https://thunderstore.io/c/lethal-company/p/XuXiaolan/TheGiantSpecimens/)
+[![Thunderstore Version](https://img.shields.io/thunderstore/v/DreWulff/SkaarjPupae?style=for-the-badge&logo=thunderstore&logoColor=white)](https://thunderstore.io/c/lethal-company/p/DreWulff/SkaarjPupae/)
+[![Thunderstore Downloads](https://img.shields.io/thunderstore/dt/DreWulff/SkaarjPupae?style=for-the-badge&logo=thunderstore&logoColor=white)](https://thunderstore.io/c/lethal-company/p/DreWulff/SkaarjPupae/)
 
 ![demo](https://github.com/DreWulff/LC-SkaarjPupae/blob/main/PupaeDemo.gif)
 
