@@ -15,6 +15,6 @@ Based on Unreal's original monster, it contains custom animations, AI and textur
 * **Legend Entertainment, Epic Games, Digital Extremes** for the original concept and the base assets of the creature.
 
 * **DreWulff**: Animation and programming.
-    * Source code: ![Skaarj Pupae](https://github.com/DreWulff/LC-UnrealPupae)
+    * Source code: [Skaarj Pupae](https://github.com/DreWulff/LC-UnrealPupae)
 
 * Based off of ExampleEnemy from [@Hamunii](https://github.com/Hamunii/LC-ExampleEnemy).
