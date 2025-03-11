@@ -53,15 +53,15 @@ namespace SkaarjPupae {
                 {Levels.LevelTypes.VowLevel, 100},
                 {Levels.LevelTypes.OffenseLevel, 30},
                 {Levels.LevelTypes.AdamanceLevel, 150},
-                {Levels.LevelTypes.All, 0},     // Affects unset values, with lowest priority (gets overridden by Levels.LevelTypes.Modded)
-                {Levels.LevelTypes.Modded, 30},     // Affects values for modded moons that weren't specified
+                //{Levels.LevelTypes.All, 30},     // Affects unset values, with lowest priority (gets overridden by Levels.LevelTypes.Modded)
+                //{Levels.LevelTypes.Modded, 50},     // Affects values for modded moons that weren't specified
             };
             var SkaarjPupaeCustomLevelRarities = new Dictionary<string, int> {
-                {"46 Infernis", 69},    // Either LLL or LE(C) name can be used, LethalLib will handle both
-                {"76 Acidir", 200},
-                {"240 Alcatras", 50},
+                {"46 Infernis", 100},    // Either LLL or LE(C) name can be used, LethalLib will handle both
+                {"76 Acidir", 300},
                 {"84 Junic", 300},
-                {"6 Mazon", 150},
+                {"6 Mazon", 200},
+                {"Halation", 100},
             };
             Enemies.RegisterEnemy(SkaarjPupae, SkaarjPupaeLevelRarities, SkaarjPupaeCustomLevelRarities, SkaarjPupaeTN, SkaarjPupaeTK);
             
