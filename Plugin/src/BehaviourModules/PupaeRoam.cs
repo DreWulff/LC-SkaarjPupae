@@ -37,7 +37,6 @@ namespace SkaarjPupae
             followDelay = Random.Range(1, 4);
             StopSearch(currentSearch);
             SetDestinationToPosition(squadLeader.transform.position);
-            LogIfDebugBuild("Following leader!");
         }
 
         /// <summary>
@@ -73,7 +72,6 @@ namespace SkaarjPupae
             // If pupae spots a player, alert group.
             if (FoundClosestPlayerInRange(10f, 5f))
             {
-                Debug.Log("Spotted player! Alerting group!");
                 PlayerSpotted(this);
                 return;
             }
