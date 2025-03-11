@@ -6,6 +6,8 @@
 
 Mod that adds an enemy based on the skaarj pupae of the game Unreal. It uses custom animations, AI and textures.
 
+![PupaesInHalation](https://imgur.com/PXfy6Xl.png)
+
 ## Behaviour
 
 * A small spider-like creature that roams around looking for players.
@@ -13,10 +15,12 @@ Mod that adds an enemy based on the skaarj pupae of the game Unreal. It uses cus
 * Not very dangerous when alone, but quite the nuisance when in groups.
 * Nothing a good shovel cannot solve.
 
+![PupaesInInfernis](https://imgur.com/GY3RehE.png)
+
 ## Credits
 
 * **DreWulff (me!)**: Animating and coding.
-    * Source code: ![LC-SkaarjPupae on github](https://github.com/DreWulff/LC-SkaarjPupae)
+    * Source code: [LC-SkaarjPupae on github](https://github.com/DreWulff/LC-SkaarjPupae)
 * **Legend Entertainment, Epic Games, Digital Extremes** for the original concept and base assets of the creature.
 * Based off of ExampleEnemy from [@Hamunii](https://github.com/Hamunii/LC-ExampleEnemy).
     * Thanks for helping in the Lethal Company Modding Discord server too ❤️.
