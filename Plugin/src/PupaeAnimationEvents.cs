@@ -1,12 +1,11 @@
 ﻿using UnityEngine;
-using Random = UnityEngine.Random;
 
 namespace SkaarjPupae
 {
     class PupaeAnimationEvents : MonoBehaviour
     {
         [SerializeField]
-        private PupaeAI mainAI;
+        private PupaeAI mainAI = null!;
 
         public void Chase()
         { mainAI.StartChase(); }

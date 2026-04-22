@@ -5,7 +5,7 @@ namespace SkaarjPupae
     class PupaeScanner : MonoBehaviour
     {
         [SerializeField]
-        private PupaeAI mainAI;
+        private PupaeAI mainAI = null!;
 
         public void OnTriggerEnter(Collider other)
         {

@@ -6,8 +6,7 @@
 
 Mod that adds an enemy based on the skaarj pupae of the game Unreal. It uses custom animations, AI and textures.
 
-![PupaesInHalation](https://github.com/DreWulff/LC-SkaarjPupae/blob/main/Screenshot2.png)
-![PupaesInInfernis](https://github.com/DreWulff/LC-SkaarjPupae/blob/main/Screenshot1.png)
+![PupaesInHalation](https://imgur.com/PXfy6Xl.png)
 
 ## Behaviour
 
@@ -15,6 +14,8 @@ Mod that adds an enemy based on the skaarj pupae of the game Unreal. It uses cus
 * After spotting a player it will chase it and leap when close enough.
 * Not very dangerous when alone, but quite the nuisance when in groups.
 * Nothing a good shovel cannot solve.
+
+![PupaesInInfernis](https://imgur.com/GY3RehE.png)
 
 ## Credits
 
@@ -46,13 +47,3 @@ Mod that adds an enemy based on the skaarj pupae of the game Unreal. It uses cus
 * Maybe more stuff inspired/based on some of my favourite games, like:
     * Dungeon Siege
     * Grim Dawn
-
-# Console Commands
-```py
-# Install netcode patcher
-dotnet tool install -g Evaisa.NetcodePatcher.Cli
-dotnet tool restore
-
-# Build project
-dotnet build
-```

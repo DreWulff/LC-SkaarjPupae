@@ -51,9 +51,11 @@ UpgradeLog.htm
 /Thunderstore/Packages/*
 
 UnityProject/
+Thunderstore/
 
 # Exclude stuff
 !/dlls/LethalLib.dll
 !/Thunderstore/Packages/*.txt
 
 *.meta
+*.zip

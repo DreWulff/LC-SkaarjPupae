@@ -6,16 +6,21 @@ using BepInEx.Logging;
 using System.IO;
 using SkaarjPupae.Configuration;
 using System.Collections.Generic;
+using static LethalLib.Modules.Levels;
 
-namespace SkaarjPupae {
+namespace SkaarjPupae
+{
     [BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
-    [BepInDependency(LethalLib.Plugin.ModGUID)] 
-    public class Plugin : BaseUnityPlugin {
+    [BepInDependency(LethalLib.Plugin.ModGUID)]
+    public class Plugin : BaseUnityPlugin
+    {
         internal static new ManualLogSource Logger = null!;
         internal static PluginConfig BoundConfig { get; private set; } = null!;
         public static AssetBundle? pupaeAssets;
+        public static AssetBundle? plushieAssets;
 
-        private void Awake() {
+        private void Awake()
+        {
             Logger = base.Logger;
 
             // If you don't want your mod to use a configuration file, you can remove this line, Configuration.cs, and other references.
@@ -30,7 +35,16 @@ namespace SkaarjPupae {
             // In that case also remember to change the asset bundle copying code in the csproj.user file.
             var bundleName = "skaarj-pupae-assets";
             pupaeAssets = AssetBundle.LoadFromFile(Path.Combine(Path.GetDirectoryName(Info.Location), bundleName));
-            if (pupaeAssets == null) {
+            if (pupaeAssets == null)
+            {
+                Logger.LogError($"Failed to load custom assets.");
+                return;
+            }
+
+            var plushieBundle = "pupaeplushie";
+            plushieAssets = AssetBundle.LoadFromFile(Path.Combine(Path.GetDirectoryName(Info.Location), plushieBundle));
+            if (pupaeAssets == null)
+            {
                 Logger.LogError($"Failed to load custom assets.");
                 return;
             }
@@ -40,6 +54,23 @@ namespace SkaarjPupae {
             var SkaarjPupaeTN = pupaeAssets.LoadAsset<TerminalNode>("SkaarjPupaeTN");
             var SkaarjPupaeTK = pupaeAssets.LoadAsset<TerminalKeyword>("SkaarjPupaeTK");
 
+            Item PupaePlushie = plushieAssets.LoadAsset<Item>("PupaePlushie");
+            if (PupaePlushie != null)
+            {
+                var properties = PupaePlushie.GetType().GetProperties();
+                foreach (var property in properties)
+                {
+                    var value = property.GetValue(PupaePlushie, null);
+                    Logger.LogInfo($"PupaePlushie Property: {property.Name} = {value}");
+                    NetworkPrefabs.RegisterNetworkPrefab(PupaePlushie.spawnPrefab);
+                    Utilities.FixMixerGroups(PupaePlushie.spawnPrefab);
+                    Items.RegisterScrap(PupaePlushie, 100, (LevelTypes)(-1));
+                }
+            }
+            else
+            {
+                Logger.LogError("PupaePlushie asset could not be loaded.");
+            }
             // Network Prefabs need to be registered. See https://docs-multiplayer.unity3d.com/netcode/current/basics/object-spawning/
             // LethalLib registers prefabs on GameNetworkManager.Start.
             NetworkPrefabs.RegisterNetworkPrefab(SkaarjPupae.enemyPrefab);
@@ -64,11 +95,12 @@ namespace SkaarjPupae {
                 {"Halation", 100},
             };
             Enemies.RegisterEnemy(SkaarjPupae, SkaarjPupaeLevelRarities, SkaarjPupaeCustomLevelRarities, SkaarjPupaeTN, SkaarjPupaeTK);
-            
+
             Logger.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
         }
 
-        private static void InitializeNetworkBehaviours() {
+        private static void InitializeNetworkBehaviours()
+        {
             // See https://github.com/EvaisaDev/UnityNetcodePatcher?tab=readme-ov-file#preparing-mods-for-patching
             var types = Assembly.GetExecutingAssembly().GetTypes();
             foreach (var type in types)
@@ -83,6 +115,6 @@ namespace SkaarjPupae {
                     }
                 }
             }
-        } 
+        }
     }
 }

@@ -6,12 +6,10 @@ namespace SkaarjPupae
 {
     partial class PupaeAI : EnemyAI
     {
-#pragma warning disable CS8618 // Required
         [Tooltip("Leaping cooldown.")]
-        [SerializeField] private float _leapCooldown;
+        [SerializeField] private float _leapCooldown = 3f;
         [Tooltip("Curve that defines how gravity increases during a leap.")]
-        [SerializeField] private AnimationCurve _gravityCurve;
-#pragma warning restore CS8618
+        [SerializeField] private AnimationCurve _gravityCurve = null!;
 
         private bool jumping = false;
         private bool jumped = false;

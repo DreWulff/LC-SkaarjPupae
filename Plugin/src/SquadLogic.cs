@@ -9,12 +9,9 @@ namespace SkaarjPupae
     {
         [HideInInspector] public bool isLeader;
 
-#pragma warning disable CS8618 // Will not be NULL after Start
-        [HideInInspector] public PupaeAI[] squad;
-        [HideInInspector] public PupaeAI squadLeader;
+        [HideInInspector] public PupaeAI[] squad = null!;
+        [HideInInspector] public PupaeAI squadLeader = null!;
         [HideInInspector] public int squadState;
-        [HideInInspector] public PlayerControllerB? squadTargetPlayer;
-#pragma warning restore CS8618
 
         enum SquadState
         {

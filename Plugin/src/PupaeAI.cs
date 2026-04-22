@@ -8,16 +8,14 @@ namespace SkaarjPupae {
     [RequireComponent(typeof(Rigidbody))]
     partial class PupaeAI : EnemyAI
     {
-#pragma warning disable 0649, CS8618
         [Tooltip("Cooldown for damage instances.")]
-        [SerializeField] private float damageCooldown;
+        [SerializeField] private float damageCooldown = 1f;
         [Tooltip("Damage done to the player when hit during a leap.")]
-        [SerializeField] private int leapDamage;
+        [SerializeField] private int leapDamage = 10;
 
         private float timeSinceDamagingPlayer;
         [HideInInspector]
         public Rigidbody rb;
-#pragma warning restore 0649, CS8618
         enum State {
             ROAMING,
             SURVEILLING,
@@ -133,9 +131,6 @@ namespace SkaarjPupae {
                     // Our death sound will be played through creatureVoice when KillEnemy() is called.
                     // KillEnemy() will also attempt to call creatureAnimator.SetTrigger("KillEnemy"),
                     // so we don't need to call a death animation ourselves.
-
-                    // We need to stop our search coroutine, because the game does not do that by default.
-                    StopCoroutine(searchCoroutine);
                     KillEnemyOnOwnerClient();
                 }
             }
