@@ -15,7 +15,7 @@ namespace SkaarjPupae {
 
         private float timeSinceDamagingPlayer;
         [HideInInspector]
-        public Rigidbody rb;
+        public Rigidbody rb = null!;
         enum State {
             ROAMING,
             SURVEILLING,

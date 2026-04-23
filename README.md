@@ -46,13 +46,3 @@ Mod that adds an enemy based on the skaarj pupae of the game Unreal. It uses cus
 * Maybe more stuff inspired/based on some of my favourite games, like:
     * Dungeon Siege
     * Grim Dawn
-
-# Console Commands
-```py
-# Install netcode patcher
-dotnet tool install -g Evaisa.NetcodePatcher.Cli
-dotnet tool restore
-
-# Build project
-dotnet build
-```
