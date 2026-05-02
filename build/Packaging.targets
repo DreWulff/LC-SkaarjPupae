@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
+
+<Project>
+    <!-- Copy files to package folder before compressing into .zip -->
+    <Target Name="CopyToPackage" AfterTargets="PostBuildEvent">
+        <PropertyGroup>
+            <ReadmeFile>$(ProjectDir)..\README.md</ReadmeFile>
+            <LicenseFile>$(ProjectDir)..\LICENSE</LicenseFile>
+            <PackageDir>$(ProjectDir)\package\</PackageDir>
+        </PropertyGroup>
+        <MakeDir Directories="$(PackageDir)" />
+        <!-- Copy README.md, LICENSE and resulting .dll file -->
+        <Copy
+            SourceFiles="$(ReadmeFile)"
+            DestinationFolder="$(PackageDir)"
+            SkipUnchangedFiles="true" />
+        <Copy
+            SourceFiles="$(LicenseFile)"
+            DestinationFolder="$(PackageDir)"
+            SkipUnchangedFiles="true" />
+        <Copy
+            SourceFiles="$(TargetPath)"
+            DestinationFolder="$(PackageDir)"
+            SkipUnchangedFiles="true" />
+    </Target>
+    <!-- Zip files for publishing -->
+    <Target Name="ZipPackage" AfterTargets="CopyToPackage">
+        <PropertyGroup>
+            <PackageDir>$(ProjectDir)\package\</PackageDir>
+            <ZipPath>$(ProjectDir)\$(AssemblyName).zip</ZipPath>
+        </PropertyGroup>
+        <!-- Remove existing zip -->
+        <Delete Files="$(ZipPath)" Condition="Exists('$(ZipPath)')" />
+        <!-- Create zip -->
+        <ZipDirectory
+            SourceDirectory="$(PackageDir)"
+            DestinationFile="$(ZipPath)" />
+    </Target>
+    <!-- Clean copied files in package folder -->
+    <Target Name="CleanPackage" AfterTargets="ZipPackage">
+        <Delete Files="$(PackageDir)\README.md" />
+        <Delete Files="$(PackageDir)\LICENSE" />
+        <Delete Files="$(PackageDir)\$(AssemblyName).dll" />
+    </Target>
+</Project>
