@@ -1,46 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE xml>
 
+<!-- Generates a .zip file with all required files for publishing -->
 <Project>
-    <!-- Copy files to package folder before compressing into .zip -->
-    <Target Name="CopyToPackage" AfterTargets="PostBuildEvent">
+    <ItemGroup>
+        <PackageFiles Include="$(PackageDir)\*.*" />
+    </ItemGroup>
+
+    <!-- Copy files to temporary folder before compressing into .zip -->
+    <Target Name="CopyToPackage" AfterTargets="Build">
+        <Message Text="Copying files into tmp directory" Importance="high" />
         <PropertyGroup>
-            <ReadmeFile>$(ProjectDir)..\README.md</ReadmeFile>
-            <LicenseFile>$(ProjectDir)..\LICENSE</LicenseFile>
-            <PackageDir>$(ProjectDir)\package\</PackageDir>
+            <ReadmeFile>$(RootPath)\README.md</ReadmeFile>
+            <LicenseFile>$(RootPath)\LICENSE</LicenseFile>
         </PropertyGroup>
-        <MakeDir Directories="$(PackageDir)" />
+        <MakeDir Directories="$(TmpDir)" />
         <!-- Copy README.md, LICENSE and resulting .dll file -->
         <Copy
             SourceFiles="$(ReadmeFile)"
-            DestinationFolder="$(PackageDir)"
+            DestinationFolder="$(TmpDir)"
             SkipUnchangedFiles="true" />
         <Copy
             SourceFiles="$(LicenseFile)"
-            DestinationFolder="$(PackageDir)"
+            DestinationFolder="$(TmpDir)"
             SkipUnchangedFiles="true" />
         <Copy
             SourceFiles="$(TargetPath)"
-            DestinationFolder="$(PackageDir)"
+            DestinationFolder="$(TmpDir)"
             SkipUnchangedFiles="true" />
+        <!-- Copies files in package folder -->
+        <Copy
+            SourceFiles="@(PackageFiles)"
+            DestinationFolder="$(TmpDir)"
+            SkipUnchangedFiles="True" />
     </Target>
+
     <!-- Zip files for publishing -->
     <Target Name="ZipPackage" AfterTargets="CopyToPackage">
         <PropertyGroup>
-            <PackageDir>$(ProjectDir)\package\</PackageDir>
             <ZipPath>$(ProjectDir)\$(AssemblyName).zip</ZipPath>
         </PropertyGroup>
         <!-- Remove existing zip -->
         <Delete Files="$(ZipPath)" Condition="Exists('$(ZipPath)')" />
         <!-- Create zip -->
         <ZipDirectory
-            SourceDirectory="$(PackageDir)"
+            SourceDirectory="$(TmpDir)\"
             DestinationFile="$(ZipPath)" />
     </Target>
-    <!-- Clean copied files in package folder -->
+
+    <!-- Clean temporary folder -->
     <Target Name="CleanPackage" AfterTargets="ZipPackage">
-        <Delete Files="$(PackageDir)\README.md" />
-        <Delete Files="$(PackageDir)\LICENSE" />
-        <Delete Files="$(PackageDir)\$(AssemblyName).dll" />
+        <Message Text="Cleaning up tmp directory" Importance="high" />
+        <RemoveDir Directories="$(TmpDir)\" />
     </Target>
 </Project>

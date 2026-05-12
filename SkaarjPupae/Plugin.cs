@@ -33,7 +33,7 @@ namespace SkaarjPupae
             // You may want to rename your asset bundle from the AssetBundle Browser in order to avoid an issue with
             // asset bundle identifiers being the same between multiple bundles, allowing the loading of only one bundle from one mod.
             // In that case also remember to change the asset bundle copying code in the csproj.user file.
-            var bundleName = "skaarj-pupae-assets";
+            var bundleName = "skaarjpupae";
             pupaeAssets = AssetBundle.LoadFromFile(Path.Combine(Path.GetDirectoryName(Info.Location), bundleName));
             if (pupaeAssets == null)
             {
@@ -50,27 +50,27 @@ namespace SkaarjPupae
             }
 
             // We load our assets from our asset bundle. Remember to rename them both here and in our Unity project.
-            var SkaarjPupae = pupaeAssets.LoadAsset<EnemyType>("SkaarjPupae");
+            var SkaarjPupae = pupaeAssets.LoadAsset<EnemyType>("SkaarjPupaeEnemy");
             var SkaarjPupaeTN = pupaeAssets.LoadAsset<TerminalNode>("SkaarjPupaeTN");
             var SkaarjPupaeTK = pupaeAssets.LoadAsset<TerminalKeyword>("SkaarjPupaeTK");
 
-            Item PupaePlushie = plushieAssets.LoadAsset<Item>("PupaePlushie");
-            if (PupaePlushie != null)
-            {
-                var properties = PupaePlushie.GetType().GetProperties();
-                foreach (var property in properties)
-                {
-                    var value = property.GetValue(PupaePlushie, null);
-                    Logger.LogInfo($"PupaePlushie Property: {property.Name} = {value}");
-                    NetworkPrefabs.RegisterNetworkPrefab(PupaePlushie.spawnPrefab);
-                    Utilities.FixMixerGroups(PupaePlushie.spawnPrefab);
-                    Items.RegisterScrap(PupaePlushie, 100, (LevelTypes)(-1));
-                }
-            }
-            else
-            {
-                Logger.LogError("PupaePlushie asset could not be loaded.");
-            }
+            // Item PupaePlushie = plushieAssets.LoadAsset<Item>("PupaePlushie");
+            // if (PupaePlushie != null)
+            // {
+            //     var properties = PupaePlushie.GetType().GetProperties();
+            //     foreach (var property in properties)
+            //     {
+            //         var value = property.GetValue(PupaePlushie, null);
+            //         Logger.LogInfo($"PupaePlushie Property: {property.Name} = {value}");
+            //         NetworkPrefabs.RegisterNetworkPrefab(PupaePlushie.spawnPrefab);
+            //         Utilities.FixMixerGroups(PupaePlushie.spawnPrefab);
+            //         Items.RegisterScrap(PupaePlushie, 100, (LevelTypes)(-1));
+            //     }
+            // }
+            // else
+            // {
+            //     Logger.LogError("PupaePlushie asset could not be loaded.");
+            // }
             // Network Prefabs need to be registered. See https://docs-multiplayer.unity3d.com/netcode/current/basics/object-spawning/
             // LethalLib registers prefabs on GameNetworkManager.Start.
             NetworkPrefabs.RegisterNetworkPrefab(SkaarjPupae.enemyPrefab);

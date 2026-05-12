@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
+
+<!--
+Directory.Build.props is imported before any .csproj files
+allowing to setup required properties between projects.
+
+This file holds most required properties required during the
+build process.
+-->
+<Project>
+    <!-- Base Properties -->
+    <PropertyGroup>
+        <TargetFramework>netstandard2.1</TargetFramework>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <LangVersion>latest</LangVersion>
+        <Nullable>enable</Nullable>
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>embedded</DebugType>
+        <PathMap>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)'))=./</PathMap>
+        <BaseOutputPath>$(MSBuildProjectDirectory)\.artifacts\bin\</BaseOutputPath>
+        <BaseIntermediateOutputPath>$(MSBuildProjectDirectory)\.artifacts\obj\</BaseIntermediateOutputPath>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <RestoreAdditionalProjectSources>
+            https://api.nuget.org/v3/index.json;
+            https://nuget.bepinex.dev/v3/index.json
+        </RestoreAdditionalProjectSources>
+    </PropertyGroup>
+
+    <!-- Base Paths -->
+    <PropertyGroup>
+        <RootPath>$(MSBuildProjectDirectory)\..</RootPath>
+        <UserSettingsPath>$(MSBuildThisFileDirectory)\User.Settings.props</UserSettingsPath>
+        <LibsPath>$(RootPath)\libs\</LibsPath>
+        <PackageDir>$(RootPath)\package</PackageDir>
+        <TmpDir>$(RootPath)\tmp-package\</TmpDir>
+    </PropertyGroup>
+
+</Project>

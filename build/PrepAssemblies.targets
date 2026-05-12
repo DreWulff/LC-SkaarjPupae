@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
+
+<!-- Copies required game and plugin assemblies into libs folder for reference -->
+<Project>
+    <ItemGroup>
+        <!-- Basic requirements -->
+        <GameDLLs Include="$(BepInExPath)\BepInEx.dll" />
+        <GameDLLs Include="$(AssembliesPath)\Assembly-CSharp.dll" />
+        <GameDLLs Include="$(AssembliesPath)\Unity.Netcode.Runtime.dll" />
+    </ItemGroup>
+
+    <Target Name="CopyGameLibraries" AfterTargets="ValidateUserSettings">
+        <MakeDir Directories="$(LibsPath)" />
+
+        <!-- Copies base required files -->
+        <Copy
+            SourceFiles="@(GameDLLs)"
+            DestinationFolder="$(LibsPath)"
+            SkipUnchangedFiles="true" />
+
+        <!-- Copies project-specific requirements (PluginDLLs ItemGroup)-->
+        <Copy
+            SourceFiles="@(PluginDLLs)"
+            DestinationFolder="$(LibsPath)"
+            SkipUnchangedFiles="true" />
+
+    </Target>
+</Project>

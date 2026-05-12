@@ -6,8 +6,10 @@
 
 Mod that adds an enemy based on the skaarj pupae of the game Unreal. It uses custom animations, AI and textures.
 
-![PupaesInHalation](https://github.com/DreWulff/LC-SkaarjPupae/blob/main/Screenshot2.png)
-![PupaesInInfernis](https://github.com/DreWulff/LC-SkaarjPupae/blob/main/Screenshot1.png)
+![PupaesInHalation](https://imgur.com/PXfy6Xl.png)
+
+## Development
+For development documentation about this project, make sure to read the [`DEVELOPMENT.md` document](./DEVELOPMENT.md).
 
 ## Behaviour
 
@@ -15,6 +17,7 @@ Mod that adds an enemy based on the skaarj pupae of the game Unreal. It uses cus
 * After spotting a player it will chase it and leap when close enough.
 * Not very dangerous when alone, but quite the nuisance when in groups.
 * Nothing a good shovel cannot solve.
+* ![PupaesInInfernis](https://i.imgur.com/GY3RehE.png)
 
 ## Credits
 
@@ -29,11 +32,8 @@ Mod that adds an enemy based on the skaarj pupae of the game Unreal. It uses cus
 
 ## ToDo
 
-* Update config.
-* Add attack animation and logic when close.
 * Polish group behaviour.
 * **Pupae plushie scrap**
-* Growth mechanic.
 
 ## Future projects
 

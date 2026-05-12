@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace SkaarjPupae
+namespace SkaarjPupae.AI
 {
     partial class PupaeAI : EnemyAI
     {

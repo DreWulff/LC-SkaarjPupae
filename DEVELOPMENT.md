@@ -1,3 +1,14 @@
+# Introduction
+As I am not an "authority" on the matter and whatever I say is a reflection of my personal experience, first person will be used in order to emphasize to the reader that the decisions made here and the workflow presented are personal preference and not a development standard or a strict guideline.
+
+# Initial setup
+
+# Building
+
+# Working in Unity
+
+# Testing
+
 # Console Commands
 ```py
 # Clear obsolete installs
@@ -6,7 +17,6 @@ dotnet tool uninstall -g Evaisa.NetcodePatcher.Cli
 
 # Install netcode patcher
 dotnet tool install -g Evaisa.NetcodePatcher.Cli
-dotnet tool restore
 
 # Build project
 dotnet build

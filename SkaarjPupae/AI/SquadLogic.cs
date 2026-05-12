@@ -3,7 +3,7 @@ using System.Linq;
 using GameNetcodeStuff;
 using UnityEngine;
 
-namespace SkaarjPupae
+namespace SkaarjPupae.AI
 {
     partial class PupaeAI : EnemyAI
     {
@@ -13,7 +13,7 @@ namespace SkaarjPupae
         [HideInInspector] public PupaeAI squadLeader = null!;
         [HideInInspector] public int squadState;
 
-        enum SquadState
+        public enum SquadState
         {
             ROAMING,
             SURVEILLING,
@@ -38,7 +38,7 @@ namespace SkaarjPupae
             if (other.GetInstanceID() > this.GetInstanceID()) return;
             other.Join(squad);
 
-            UpdateSquadState((int)State.ROAMING);
+            UpdateSquadState(SquadState.ROAMING);
         }
 
         /// <summary>
@@ -113,10 +113,10 @@ namespace SkaarjPupae
         /// Updates the AI state of the squad.
         /// </summary>
         /// <param name="state"></param>
-        public void UpdateSquadState(int state)
+        public void UpdateSquadState(SquadState state)
         {
             foreach(PupaeAI pupae in squad)
-            { pupae.squadState = state; }
+            { pupae.squadState = (int)state; }
         }
 
         /// <summary>

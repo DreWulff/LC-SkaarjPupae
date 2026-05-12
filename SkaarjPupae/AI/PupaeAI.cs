@@ -3,8 +3,8 @@ using GameNetcodeStuff;
 using Unity.Netcode;
 using UnityEngine;
 
-namespace SkaarjPupae {
-
+namespace SkaarjPupae.AI
+{
     [RequireComponent(typeof(Rigidbody))]
     partial class PupaeAI : EnemyAI
     {
@@ -16,7 +16,8 @@ namespace SkaarjPupae {
         private float timeSinceDamagingPlayer;
         [HideInInspector]
         public Rigidbody rb = null!;
-        enum State {
+        public enum State
+        {
             ROAMING,
             SURVEILLING,
             SPOTTED,
@@ -39,18 +40,25 @@ namespace SkaarjPupae {
                 enemyHP = (int)(enemyHP * 1.5f);
                 leapDamage = (int)(leapDamage * 1.5f);
             }
-            gameObject.transform.transform.localScale = new Vector3(randomSize, randomSize, randomSize);
+            gameObject.transform.transform.localScale *= randomSize;
             rb = gameObject.GetComponent<Rigidbody>();
             timeSinceDamagingPlayer = damageCooldown;
             squad = [this];
             isLeader = true;
             squadLeader = this;
             LogIfDebugBuild("Skaarj Pupae Spawned");
+            inSpecialAnimation = true;
+        }
+
+        public void FinishSpawn()
+        {
+            inSpecialAnimation = false;
             StartRoam();
         }
-        
+
         // Runs every frame.
-        public override void Update() {
+        public override void Update()
+        {
             base.Update();
             // Make sure leap finished even in death.
             if (isEnemyDead && !jumping)
@@ -79,11 +87,13 @@ namespace SkaarjPupae {
         }
 
         // Runs every AIInterval. Disabled if inSpecialAnimation = true.
-        public override void DoAIInterval() {
-            
+        public override void DoAIInterval()
+        {
+
             base.DoAIInterval();
             if (isEnemyDead || StartOfRound.Instance.allPlayersDead)
-            { return; };
+            { return; }
+            ;
 
             // Behaviour when in a squad.
             switch (currentBehaviourStateIndex)
@@ -121,13 +131,16 @@ namespace SkaarjPupae {
             }
         }
 
-        public override void HitEnemy(int force = 1, PlayerControllerB? playerWhoHit = null, bool playHitSFX = false, int hitID = -1) {
+        public override void HitEnemy(int force = 1, PlayerControllerB? playerWhoHit = null, bool playHitSFX = false, int hitID = -1)
+        {
             base.HitEnemy(force, playerWhoHit, playHitSFX, hitID);
-            if(isEnemyDead)
+            if (isEnemyDead)
             { return; }
             enemyHP -= force;
-            if (IsOwner) {
-                if (enemyHP <= 0 && !isEnemyDead) {
+            if (IsOwner)
+            {
+                if (enemyHP <= 0 && !isEnemyDead)
+                {
                     // Our death sound will be played through creatureVoice when KillEnemy() is called.
                     // KillEnemy() will also attempt to call creatureAnimator.SetTrigger("KillEnemy"),
                     // so we don't need to call a death animation ourselves.
@@ -159,8 +172,8 @@ namespace SkaarjPupae {
         }
 
         [ClientRpc]
-        public void DoAnimationClientRpc(string animationName)
-        { creatureAnimator.SetTrigger(animationName); }
+        public void DoAnimationClientRpc(State animationName)
+        { creatureAnimator.SetIntegerString("State", (int)animationName); UnityEngine.Debug.Log(animationName); }
 
         [ClientRpc]
         public void SetAnimationParameterClientRpc(string parameter, float value)

@@ -58,3 +58,8 @@ Thunderstore/
 
 *.meta
 *.zip
+
+# Exclude user-specified paths
+User.Settings.props
+libs/
+.artifacts/

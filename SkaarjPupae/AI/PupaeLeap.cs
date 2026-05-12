@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-namespace SkaarjPupae
+namespace SkaarjPupae.AI
 {
     partial class PupaeAI : EnemyAI
     {
@@ -25,7 +25,7 @@ namespace SkaarjPupae
         {
             SwitchToBehaviourClientRpc((int)State.LEAPING);
             inSpecialAnimation = true;
-            DoAnimationClientRpc("Leap");
+            DoAnimationClientRpc(State.LEAPING);
         }
 
         /// <summary>

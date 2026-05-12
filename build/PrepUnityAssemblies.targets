@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
+
+<!-- Copies all required .dll files into Unity Project -->
+<Project>
+    <ItemGroup>
+        <UnityDLLs Include="$(AssembliesPath)\AmazingAssets.TerrainToMesh.dll" />
+        <UnityDLLs Include="$(AssembliesPath)\ClientNetworkTransform.dll" />
+        <UnityDLLs Include="$(AssembliesPath)\DissonanceVoip.dll" />
+        <UnityDLLs Include="$(AssembliesPath)\Facepunch Transport for Netcode for GameObjects.dll" />
+        <UnityDLLs Include="$(AssembliesPath)\Facepunch.Steamworks.Win64.dll" />
+        <UnityDLLs Include="$(AssembliesPath)\Newtonsoft.Json.dll" />
+        <UnityDLLs Include="$(AssembliesPath)\Assembly-CSharp-firstpass.dll" />
+
+        <UnityDLLs Include="$(BepInExPath)\0Harmony20.dll" />
+        <UnityDLLs Include="$(BepInExPath)\0Harmony.dll" />
+        <UnityDLLs Include="$(BepInExPath)\BepInEx.dll" />
+        <UnityDLLs Include="$(BepInExPath)\BepInEx.Preloader.dll" />
+        <UnityDLLs Include="$(BepInExPath)\HarmonyXInterop.dll" />
+        <UnityDLLs Include="$(BepInExPath)\Mono.Cecil.dll" />
+        <UnityDLLs Include="$(BepInExPath)\Mono.Cecil.Mdb.dll" />
+        <UnityDLLs Include="$(BepInExPath)\Mono.Cecil.Pdb.dll" />
+        <UnityDLLs Include="$(BepInExPath)\Mono.Cecil.Rocks.dll" />
+        <UnityDLLs Include="$(BepInExPath)\MonoMod.RuntimeDetour.dll" />
+        <UnityDLLs Include="$(BepInExPath)\MonoMod.Utils.dll" />
+
+        <UnityDLLs Include="$(MMHOOKPath)\MMHOOK_AmazingAssets.TerrainToMesh.dll" />
+        <UnityDLLs Include="$(MMHOOKPath)\MMHOOK_Assembly-CSharp.dll" />
+        <UnityDLLs Include="$(MMHOOKPath)\MMHOOK_ClientNetworkTransform.dll" />
+        <UnityDLLs Include="$(MMHOOKPath)\MMHOOK_DissonanceVoip.dll" />
+        <UnityDLLs Include="$(MMHOOKPath)\MMHOOK_Facepunch.Steamworks.Win64.dll" />
+        <UnityDLLs
+            Include="$(MMHOOKPath)\MMHOOK_Facepunch Transport for Netcode for GameObjects.dll" />
+    </ItemGroup>
+
+    <Target Name="CopyToUnity" AfterTargets="Build">
+        <Message Text="Copying .dll files to Unity project" Importance="high" />
+        <!-- Copy base required DLLs -->
+        <Copy
+            SourceFiles="@(UnityDLLs)"
+            DestinationFolder="$(UnityProjectDir)\Assets\Plugins"
+            SkipUnchangedFiles="true" />
+
+        <!-- Copy PluginDLLs defined in Directory.Build.targets -->
+        <Copy
+            SourceFiles="@(PluginDLLs)"
+            DestinationFolder="$(UnityProjectDir)\Assets\Plugins"
+            SkipUnchangedFiles="true" />
+
+        <!-- Copy resulting .dll of build -->
+        <Copy
+            SourceFiles="$(TargetPath)"
+            DestinationFolder="$(UnityProjectDir)\Assets\Plugins"
+            SkipUnchangedFiles="true" />
+
+    </Target>
+</Project>

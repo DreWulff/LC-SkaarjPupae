@@ -3,6 +3,7 @@
 - Added spawning animation
 - Updated icon
 - Added spawn configuration through Config Helper library
+- Restructured project and added documentation
 
 # v1.0.3 (10-03-2025)
 - Removed unnecessary console logs.

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace SkaarjPupae
+namespace SkaarjPupae.AI
 {
     partial class PupaeAI : EnemyAI
     {
@@ -11,7 +11,7 @@ namespace SkaarjPupae
         /// <param name="sender"></param>
         public void PlayerSpotted(PupaeAI sender)
         {
-            UpdateSquadState((int)SquadState.SPOTTED);
+            UpdateSquadState(SquadState.SPOTTED);
             UpdateSquadTarget(sender.targetPlayer);
             StartSpot();
         }
@@ -26,7 +26,7 @@ namespace SkaarjPupae
             agent.enabled = true;
             inSpecialAnimation = false;
             agent.speed = 0f;
-            DoAnimationClientRpc("Spot");
+            DoAnimationClientRpc(State.SPOTTED);
         }
 
         /// <summary>

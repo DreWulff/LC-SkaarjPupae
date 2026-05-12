@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
+
+<!-- Verifies if the user has configured a User.Settings.props file before proceeding -->
+<Project>
+    <Import Project="$(UserSettingsPath)"
+        Condition="Exists('$(UserSettingsPath)')" />
+
+    <Target Name="ValidateUserSettings" BeforeTargets="PrepareForBuild">
+        <Error Condition="!Exists('$(UserSettingsPath)')"
+            Text="
+Missing User.Settings.props
+Copy User.Settings.props.example → User.Settings.props
+and write correct paths" />
+    </Target>
+</Project>

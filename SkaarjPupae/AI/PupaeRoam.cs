@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace SkaarjPupae
+namespace SkaarjPupae.AI
 {
     partial class PupaeAI : EnemyAI
     {
@@ -16,9 +16,9 @@ namespace SkaarjPupae
             agent.enabled = true;
             inSpecialAnimation = false;
             timeSinceLeap = _leapCooldown;
-            DoAnimationClientRpc("Crawl");
+            DoAnimationClientRpc(State.ROAMING);
             if (isLeader)
-            { UpdateSquadState((int)SquadState.ROAMING); }
+            { UpdateSquadState(SquadState.ROAMING); }
             else
             {
                 StartFollow();

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace SkaarjPupae
+namespace SkaarjPupae.AI
 {
     partial class PupaeAI : EnemyAI
     {
@@ -15,8 +15,8 @@ namespace SkaarjPupae
             inSpecialAnimation = false;
 
             if (isLeader)
-            { UpdateSquadState((int)SquadState.CHASING); }
-            DoAnimationClientRpc("Chase");
+            { UpdateSquadState(SquadState.CHASING); }
+            DoAnimationClientRpc(State.CHASING);
         }
 
         /// <summary>
@@ -35,7 +35,7 @@ namespace SkaarjPupae
             // Leader checks if pupaes have target in range.
             if (isLeader && (!IsTargetInRange() || targetPlayer.isPlayerDead))
             {
-                UpdateSquadState((int)SquadState.ROAMING);
+                UpdateSquadState(SquadState.ROAMING);
                 StartRoam();
                 return;
             }

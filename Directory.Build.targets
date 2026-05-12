@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
+
+<!--
+Directory.Build.target is imported before any .csproj files
+and after Directory.Build.props.
+
+This file mainly focuses on user/project configurations
+-->
+<Project>
+    <!-- Verify if user has defined paths to game, mods and Unity project -->
+    <Import Project="$(RootPath)\build\VerifyUserSettings.targets" />
+
+    <!-- Paths depending on user configuration -->
+    <PropertyGroup>
+        <AssembliesPath>$(GamePath)\Lethal Company_Data\Managed</AssembliesPath>
+        <BepInExPath>$(ModdedPath)\BepInEx\core</BepInExPath>
+        <PluginsPath>$(ModdedPath)\BepInEx\plugins</PluginsPath>
+        <MMHOOKPath>$(PluginsPath)\MMHOOK</MMHOOKPath>
+    </PropertyGroup>
+
+    <!-- IMPORTANT: Specify paths of plugins required by your projects -->
+    <ItemGroup>
+        <PluginDLLs Include="$(PluginsPath)\DreWulff-ConfigHelper\DreWulff-ConfigHelper.dll" />
+    </ItemGroup>
+
+    <!-- Copy required assemblies to libs folder -->
+    <Import Project="$(MSBuildProjectDirectory)\..\build\PrepAssemblies.targets" />
+
+</Project>

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace SkaarjPupae
+namespace SkaarjPupae.AI
 {
     partial class PupaeAI : EnemyAI
     {
@@ -13,8 +13,8 @@ namespace SkaarjPupae
             SwitchToBehaviourClientRpc((int)State.SURVEILLING);
             agent.speed = 0f;
             if (isLeader)
-            { UpdateSquadState((int)SquadState.SURVEILLING); }
-            DoAnimationClientRpc("Surveil");
+            { UpdateSquadState(SquadState.SURVEILLING); }
+            DoAnimationClientRpc(State.SURVEILLING);
         }
 
 
@@ -24,7 +24,7 @@ namespace SkaarjPupae
             if (Random.Range(0f, 1f) > 0.4)
             {
                 agent.speed = 0f;
-                DoAnimationClientRpc("Surveil");
+                DoAnimationClientRpc(State.SURVEILLING);
             }
             else
             {
@@ -60,7 +60,7 @@ namespace SkaarjPupae
         public void EndSurveillance()
         {
             if (isLeader)
-            { UpdateSquadState((int)SquadState.ROAMING); }
+            { UpdateSquadState(SquadState.ROAMING); }
         }
     }
 }
