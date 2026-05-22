@@ -3,24 +3,21 @@ using System.Linq;
 using GameNetcodeStuff;
 using UnityEngine;
 
-namespace SkaarjPupae.AI
-{
-    partial class PupaeAI : EnemyAI
-    {
+namespace SkaarjPupae.AI {
+    partial class PupaeAI : EnemyAI {
         [HideInInspector] public bool isLeader;
 
         [HideInInspector] public PupaeAI[] squad = null!;
         [HideInInspector] public PupaeAI squadLeader = null!;
         [HideInInspector] public int squadState;
 
-        public enum SquadState
-        {
+        public enum SquadState {
             ROAMING,
             SURVEILLING,
             SPOTTED,
             CHASING,
         }
-        
+
 
         /// <summary>
         /// Called when two pupaes meet.
@@ -28,8 +25,7 @@ namespace SkaarjPupae.AI
         /// calls the Join() method when conditions are met.
         /// </summary>
         /// <param name="other"></param>
-        public void CreateSquad(PupaeAI other)
-        {
+        public void CreateSquad(PupaeAI other) {
             // This allows pupaes to form groups of up to 6.
             if (squad.Length >= 4) return;
             if (currentBehaviourStateIndex != (int)State.ROAMING) return;
@@ -45,8 +41,7 @@ namespace SkaarjPupae.AI
         /// Turns the pupae into the group's leader.
         /// </summary>
         /// <param name="n_squad"></param>
-        public void BecomeLeader(PupaeAI[] n_squad)
-        {
+        public void BecomeLeader(PupaeAI[] n_squad) {
             isLeader = true;
             squadLeader = this;
             UpdateSquad();
@@ -57,15 +52,11 @@ namespace SkaarjPupae.AI
         /// if necessary.
         /// </summary>
         /// <param name="remove"></param>
-        public void RemovePupae(PupaeAI remove)
-        {
+        public void RemovePupae(PupaeAI remove) {
             squad = squad.Where(obj => obj.GetInstanceID() != remove.GetInstanceID()).ToArray();
-            if (isLeader && squad.Length > 0)
-            {
-                foreach (PupaeAI pupae in squad)
-                {
-                    if (pupae.isEnemyDead)
-                    { continue; }
+            if (isLeader && squad.Length > 0) {
+                foreach (PupaeAI pupae in squad) {
+                    if (pupae.isEnemyDead) { continue; }
                     pupae.BecomeLeader(squad);
                     squadLeader = pupae;
                     squadLeader.squadState = squadState;
@@ -78,8 +69,7 @@ namespace SkaarjPupae.AI
         /// Joins two squads together.
         /// </summary>
         /// <param name="n_squad"></param>
-        public void Join(PupaeAI[] n_squad)
-        {
+        public void Join(PupaeAI[] n_squad) {
             squad = squad.Concat(n_squad).ToArray();
             UpdateSquad();
         }
@@ -88,10 +78,8 @@ namespace SkaarjPupae.AI
         /// Method that updates all squad related variables
         /// for each pupae.
         /// </summary>
-        public void UpdateSquad()
-        {
-            foreach(PupaeAI pupae in squad)
-            {
+        public void UpdateSquad() {
+            foreach (PupaeAI pupae in squad) {
                 pupae.isLeader = false;
                 pupae.squad = squad;
                 pupae.squadLeader = squadLeader;
@@ -103,20 +91,16 @@ namespace SkaarjPupae.AI
         /// Updates the chase/attack target of the squad.
         /// </summary>
         /// <param name="target"></param>
-        public void UpdateSquadTarget(PlayerControllerB target)
-        {
-            foreach(PupaeAI pupae in squad)
-            { pupae.targetPlayer = target; }
+        public void UpdateSquadTarget(PlayerControllerB target) {
+            foreach (PupaeAI pupae in squad) { pupae.targetPlayer = target; }
         }
 
         /// <summary>
         /// Updates the AI state of the squad.
         /// </summary>
         /// <param name="state"></param>
-        public void UpdateSquadState(SquadState state)
-        {
-            foreach(PupaeAI pupae in squad)
-            { pupae.squadState = (int)state; }
+        public void UpdateSquadState(SquadState state) {
+            foreach (PupaeAI pupae in squad) { pupae.squadState = (int)state; }
         }
 
         /// <summary>
@@ -124,12 +108,9 @@ namespace SkaarjPupae.AI
         /// in range.
         /// </summary>
         /// <returns></returns>
-        public bool IsTargetInRange()
-        {
-            foreach (PupaeAI pupae in squad)
-            {
-                if (pupae.FindTarget())
-                {
+        public bool IsTargetInRange() {
+            foreach (PupaeAI pupae in squad) {
+                if (pupae.FindTarget()) {
                     UpdateSquadTarget(pupae.targetPlayer);
                     return true;
                 }

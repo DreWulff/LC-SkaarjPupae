@@ -1,16 +1,13 @@
 ﻿using UnityEngine;
 
-namespace SkaarjPupae.AI
-{
-    partial class PupaeAI : EnemyAI
-    {
+namespace SkaarjPupae.AI {
+    partial class PupaeAI : EnemyAI {
         /// <summary>
         /// Group's behaviour entry point.
         /// Alerts group of target and enters state.
         /// </summary>
         /// <param name="sender"></param>
-        public void PlayerSpotted(PupaeAI sender)
-        {
+        public void PlayerSpotted(PupaeAI sender) {
             UpdateSquadState(SquadState.SPOTTED);
             UpdateSquadTarget(sender.targetPlayer);
             StartSpot();
@@ -19,8 +16,7 @@ namespace SkaarjPupae.AI
         /// <summary>
         /// Behaviour entry point.
         /// </summary>
-        public void StartSpot()
-        {
+        public void StartSpot() {
             SwitchToBehaviourClientRpc((int)State.SPOTTED);
             StopSearch(currentSearch);
             agent.enabled = true;
@@ -32,10 +28,8 @@ namespace SkaarjPupae.AI
         /// <summary>
         /// Physics portion of the behaviour. Runs every frame.
         /// </summary>
-        private void SpotUpdate()
-        {
-            if (targetPlayer != null)
-            {
+        private void SpotUpdate() {
+            if (targetPlayer != null) {
                 Vector3 direction = (targetPlayer.transform.position - transform.position).normalized;
                 Quaternion lookRotation = Quaternion.LookRotation(direction);
                 transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 2);

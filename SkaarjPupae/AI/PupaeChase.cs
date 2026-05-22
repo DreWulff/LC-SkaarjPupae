@@ -1,21 +1,19 @@
 ﻿using UnityEngine;
 
-namespace SkaarjPupae.AI
-{
-    partial class PupaeAI : EnemyAI
-    {
+namespace SkaarjPupae.AI {
+    partial class PupaeAI : EnemyAI {
         /// <summary>
         /// Behaviour entry point.
         /// </summary>
-        public void StartChase()
-        {
+        public void StartChase() {
             SwitchToBehaviourClientRpc((int)State.CHASING);
             // Non-special NavMesh movement
             agent.enabled = true;
             inSpecialAnimation = false;
 
-            if (isLeader)
-            { UpdateSquadState(SquadState.CHASING); }
+            if (isLeader) {
+                UpdateSquadState(SquadState.CHASING);
+            }
             DoAnimationClientRpc(State.CHASING);
         }
 
@@ -23,35 +21,31 @@ namespace SkaarjPupae.AI
         /// AI portion of the behaviour. Runs periodically every AIInterval.
         /// Called when in a group. Disabled when inSpecialAnimation = true;
         /// </summary>
-        private void ChaseAI()
-        {
+        private void ChaseAI() {
             // If group is in roaming state, roam.
-            if (squadState == (int)SquadState.ROAMING)
-            {
+            if (squadState == (int)SquadState.ROAMING) {
                 StartRoam();
                 return;
             }
 
             // Leader checks if pupaes have target in range.
-            if (isLeader && (!IsTargetInRange() || targetPlayer.isPlayerDead))
-            {
+            if (isLeader && (!IsTargetInRange() || targetPlayer.isPlayerDead)) {
                 UpdateSquadState(SquadState.ROAMING);
                 StartRoam();
                 return;
             }
 
-            if (timeSinceLeap < _leapCooldown)
-            { timeSinceLeap += AIIntervalTime; }
+            if (timeSinceLeap < _leapCooldown) {
+                timeSinceLeap += AIIntervalTime;
+            }
 
             // If close enough to target, leap.
-            if (targetPlayer != null)
-            {
+            if (targetPlayer != null) {
                 if (Vector3.Distance(transform.position, targetPlayer.transform.position) < 10
                     && Vector3.Distance(transform.position, targetPlayer.transform.position) > 5
                     && timeSinceLeap >= _leapCooldown
                     && targetPlayer.transform.position.y - transform.position.y < 2
-                    && CheckLineOfSightForPosition(targetPlayer.transform.position))
-                {
+                    && CheckLineOfSightForPosition(targetPlayer.transform.position)) {
                     StartLeap();
                     return;
                 }

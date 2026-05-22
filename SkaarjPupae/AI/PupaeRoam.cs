@@ -1,26 +1,23 @@
 ﻿using UnityEngine;
 
-namespace SkaarjPupae.AI
-{
-    partial class PupaeAI : EnemyAI
-    {
+namespace SkaarjPupae.AI {
+    partial class PupaeAI : EnemyAI {
         private float followDelay = 0;
         private float surveillanceTimer = 0;
 
         /// <summary>
         /// Behaviour entry point.
         /// </summary>
-        private void StartRoam()
-        {
+        private void StartRoam() {
             SwitchToBehaviourClientRpc((int)State.ROAMING);
             agent.enabled = true;
             inSpecialAnimation = false;
             timeSinceLeap = _leapCooldown;
             DoAnimationClientRpc(State.ROAMING);
-            if (isLeader)
-            { UpdateSquadState(SquadState.ROAMING); }
-            else
-            {
+            if (isLeader) {
+                UpdateSquadState(SquadState.ROAMING);
+            }
+            else {
                 StartFollow();
                 return;
             }
@@ -32,8 +29,7 @@ namespace SkaarjPupae.AI
         /// In case the pupae is not the leader, this is called, assigning
         /// the leader as the actor's target.
         /// </summary>
-        private void StartFollow()
-        {
+        private void StartFollow() {
             followDelay = Random.Range(1, 4);
             StopSearch(currentSearch);
             SetDestinationToPosition(squadLeader.transform.position);
@@ -43,21 +39,21 @@ namespace SkaarjPupae.AI
         /// AI portion of the behaviour. Runs periodically every AIInterval.
         /// Disabled when inSpecialAnimation = true;
         /// </summary>
-        private void RoamAI()
-        {
-            if (FoundClosestPlayerInRange(10f, 10f))
-            { 
+        private void RoamAI() {
+            if (FoundClosestPlayerInRange(10f, 10f)) {
                 PlayerSpotted(this);
                 return;
             }
-            if (squadState == (int)SquadState.SPOTTED)
-            { StartSpot(); return; }
-            if (surveillanceTimer > 0)
-            { surveillanceTimer -= AIIntervalTime; }
-            if (surveillanceTimer <= 0)
-            { StartSurveillance(); }
-            else
-            { 
+            if (squadState == (int)SquadState.SPOTTED) {
+                StartSpot(); return;
+            }
+            if (surveillanceTimer > 0) {
+                surveillanceTimer -= AIIntervalTime;
+            }
+            if (surveillanceTimer <= 0) {
+                StartSurveillance();
+            }
+            else {
                 agent.speed = 3f;
                 SetCrawlingSpeed();
             }
@@ -67,46 +63,34 @@ namespace SkaarjPupae.AI
         /// AI portion of the behaviour. Runs periodically every AIInterval.
         /// Called when not the leader. Disabled when inSpecialAnimation = true;
         /// </summary>
-        private void RoamFollowerAI()
-        {
+        private void RoamFollowerAI() {
             // If pupae spots a player, alert group.
-            if (FoundClosestPlayerInRange(10f, 5f))
-            {
+            if (FoundClosestPlayerInRange(10f, 5f)) {
                 PlayerSpotted(this);
                 return;
             }
 
-            if (followDelay <= 0)
-            {
-                if (squadState == (int)SquadState.SURVEILLING)
-                { StartFollowerSurveillance(); }
-                else if (squadState == (int)SquadState.SPOTTED)
-                { StartSpot(); }
-                else
-                { FollowLeader(); }
+            if (followDelay <= 0) {
+                if (squadState == (int)SquadState.SURVEILLING) { StartFollowerSurveillance(); }
+                else if (squadState == (int)SquadState.SPOTTED) { StartSpot(); }
+                else { FollowLeader(); }
                 followDelay = Random.Range(1, 11);
             }
-            else
-            { followDelay -= 1; }
+            else { followDelay -= 1; }
         }
 
         /// <summary>
         /// Follower's agent module.
         /// </summary>
-        private void FollowLeader()
-        {
-            if (Vector3.Distance(squadLeader.transform.position, transform.position) > 7)
-            {
+        private void FollowLeader() {
+            if (Vector3.Distance(squadLeader.transform.position, transform.position) > 7) {
                 SetDestinationToPosition(squadLeader.transform.position);
                 agent.speed = 4.5f;
                 SetCrawlingSpeed();
             }
-            else
-            {
-                if (squadLeader.currentSearch.currentTargetNode != null)
-                { SetDestinationToPosition(squadLeader.currentSearch.currentTargetNode.transform.position + new Vector3(Random.Range(-2f, 2f), 0, Random.Range(-2f, 2f))); }
-                else
-                { SetDestinationToPosition(squadLeader.transform.position); }
+            else {
+                if (squadLeader.currentSearch.currentTargetNode != null) { SetDestinationToPosition(squadLeader.currentSearch.currentTargetNode.transform.position + new Vector3(Random.Range(-2f, 2f), 0, Random.Range(-2f, 2f))); }
+                else { SetDestinationToPosition(squadLeader.transform.position); }
                 agent.speed = 2.5f + Random.Range(-0.5f, 0.5f);
                 SetCrawlingSpeed();
             }
@@ -115,7 +99,6 @@ namespace SkaarjPupae.AI
         /// <summary>
         /// Sets the animation speed based on the speed of the agent.
         /// </summary>
-        private void SetCrawlingSpeed()
-        { SetAnimationParameterClientRpc("CrawlSpeed", agent.speed / 3f); }
+        private void SetCrawlingSpeed() { SetAnimationParameterClientRpc("CrawlSpeed", agent.speed / 3f); }
     }
 }
