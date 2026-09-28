@@ -8,7 +8,7 @@ namespace SkaarjPupae.AI {
         /// </summary>
         private void StartSurveillance() {
             SwitchToBehaviourClientRpc((int)State.SURVEILLING);
-            agent.speed = 0f;
+            SetCrawlingSpeed(0f);
             if (isLeader) { UpdateSquadState(SquadState.SURVEILLING); }
             DoAnimationClientRpc(State.SURVEILLING);
         }
@@ -17,14 +17,13 @@ namespace SkaarjPupae.AI {
         private void StartFollowerSurveillance() {
             SwitchToBehaviourClientRpc((int)State.SURVEILLING);
             if (Random.Range(0f, 1f) > 0.4) {
-                agent.speed = 0f;
+                SetCrawlingSpeed(0f);
                 DoAnimationClientRpc(State.SURVEILLING);
             }
             else {
                 Vector3 targetRandomPosition = squadLeader.transform.position + Vector3.Cross(squadLeader.transform.position - transform.position, Vector3.up).normalized * 7;
                 SetDestinationToPosition(targetRandomPosition);
-                agent.speed = 2f;
-                SetCrawlingSpeed();
+                SetCrawlingSpeed(2f);
             }
         }
 

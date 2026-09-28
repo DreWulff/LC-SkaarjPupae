@@ -1,2 +1,3 @@
 [*.cs]
 csharp_new_line_before_open_brace = none
+dotnet_diagnostic.IDE0005.severity = warning

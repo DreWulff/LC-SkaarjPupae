@@ -1,26 +1,51 @@
-﻿using Unity.Netcode;
+﻿using SkaarjPupae.Animation;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.AI;
 
 namespace SkaarjPupae.AI {
     partial class PupaeAI : EnemyAI {
         [Tooltip("Leaping cooldown.")]
-        [SerializeField] private float _leapCooldown = 3f;
-        [Tooltip("Curve that defines how gravity increases during a leap.")]
-        [SerializeField] private AnimationCurve _gravityCurve = null!;
+        [SerializeField]
+        private float _leapCooldown = 3f;
 
-        private bool jumping = false;
-        private bool jumped = false;
+        [Tooltip("Curve that defines the shape of the jump.")]
+        [SerializeField]
+        private JumpCurve _jumpCurve = new(5f, 15f);
+
         private float height;
         private float startingHeight;
         private float timeSinceLeap;
-        private Vector3 startingPosition;
+        private Vector3 leapStart;
+        private Vector3 leapTarget;
+        private float leapTime;
+        private float targetTime;
         private JUMP_STATE jumpState;
 
         private enum JUMP_STATE {
             PREPARING,
             JUMPING,
             LANDED,
+        }
+
+        private bool LeapCondition() {
+            if (targetPlayer == null || timeSinceLeap < _leapCooldown) return false;
+            Vector3 player = targetPlayer.transform.position;
+            Vector3 pupae = transform.position;
+            if (Mathf.Abs(player.y - pupae.y) >= _jumpCurve.curvePeak) return false;
+            Vector2 playerHorizontal = new(player.x, player.z);
+            Vector2 pupaeHorizontal = new(pupae.x, pupae.z);
+            float distance = Vector2.Distance(playerHorizontal, pupaeHorizontal);
+            if (distance > _jumpCurve.range || distance < _jumpCurve.range / 2) return false;
+            if (!CheckLineOfSightForPosition(targetPlayer.transform.position)) return false;
+
+            // SAMPLE PLAYER POSITION IN CURVE WITH FindX()
+            if (!NavMesh.SamplePosition(player, out NavMeshHit hit, maxDistance: 10f, NavMesh.AllAreas)) return false;
+            leapTarget = hit.position;
+            leapStart = pupae;
+            leapTime = 0f;
+            targetTime = _jumpCurve.FindX(Mathf.Abs(player.y - pupae.y), JumpCurve.SEGMENT.SECOND);
+            return true;
         }
 
         /// <summary>
@@ -44,17 +69,6 @@ namespace SkaarjPupae.AI {
             inSpecialAnimation = false;
             timeSinceLeap = 0f;
             agent.enabled = false;
-            rb.isKinematic = false;
-            float targetX = targetPlayer.transform.position.x;
-            float targetY = targetPlayer.transform.position.y;
-            float baseX = transform.position.x;
-            float baseY = transform.position.y;
-
-            rb.velocity = (targetPlayer.transform.position - transform.position).normalized * 30f + new Vector3(0, 7f, 0);
-            if (NavMesh.SamplePosition(transform.position, out NavMeshHit hit, maxDistance: 10f, NavMesh.AllAreas)) {
-                startingPosition = transform.position;
-                startingHeight = Mathf.Max(Mathf.Abs(startingPosition.y - hit.position.y), 0.1f);
-            }
         }
 
         /// <summary>
@@ -88,20 +102,29 @@ namespace SkaarjPupae.AI {
 
         private void LeapPhysics() {
             agent.enabled = false;
-            if (NavMesh.SamplePosition(transform.position, out NavMeshHit hit, maxDistance: 10f, NavMesh.AllAreas)) {
-                Debug.DrawLine(transform.position, hit.position, Color.cyan);
-                height = transform.position.y - hit.position.y;
-            }
-            timeSinceLeap += Time.deltaTime;
-            rb.velocity += new Vector3(0, Mathf.Lerp(0, Physics.gravity.y, _gravityCurve.Evaluate(timeSinceLeap)), 0);
-            Ray ray = new Ray(transform.position, rb.velocity);
-            if (Physics.Raycast(ray, out RaycastHit forwardHit, 1f, LayerMask.GetMask("NavigationSurface", "Terrain", "Room"))
-                && forwardHit.distance < 0.4) { EndLeapClientRpc(); return; }
-            if ((timeSinceLeap > AIIntervalTime
-                && height < startingHeight)
-                || timeSinceLeap > 1.4f) {
+            leapTime += Time.deltaTime;
+            float newY = leapStart.y + _jumpCurve.Evaluate(leapTime);
+            Vector3 newPos = leapStart + (leapTarget - leapStart) / leapTime;
+            newPos.y = newY;
+            transform.position = newPos;
+            if (leapTime >= targetTime || Vector3.Distance(newPos, leapTarget) < 1f) {
                 EndLeapClientRpc();
             }
+
+            // if (NavMesh.SamplePosition(transform.position, out NavMeshHit hit, maxDistance: 10f, NavMesh.AllAreas)) {
+            //     Debug.DrawLine(transform.position, hit.position, Color.cyan);
+            //     height = transform.position.y - hit.position.y;
+            // }
+            // timeSinceLeap += Time.deltaTime;
+            // rb.velocity += new Vector3(0, Mathf.Lerp(0, Physics.gravity.y, _jumpCurve.Evaluate(timeSinceLeap)), 0);
+            // Ray ray = new Ray(transform.position, rb.velocity);
+            // if (Physics.Raycast(ray, out RaycastHit forwardHit, 1f, LayerMask.GetMask("NavigationSurface", "Terrain", "Room"))
+            //     && forwardHit.distance < 0.4) { EndLeapClientRpc(); return; }
+            // if ((timeSinceLeap > AIIntervalTime
+            //     && height < startingHeight)
+            //     || timeSinceLeap > 1.4f) {
+            //     EndLeapClientRpc();
+            // }
         }
 
         /// <summary>
@@ -110,8 +133,7 @@ namespace SkaarjPupae.AI {
         [ClientRpc]
         private void EndLeapClientRpc() {
             jumpState = JUMP_STATE.LANDED;
-            if (!NavMesh.SamplePosition(transform.position, out NavMeshHit hit, maxDistance: 10f, NavMesh.AllAreas)) { transform.position = startingPosition; }
-            rb.isKinematic = true;
+            if (!NavMesh.SamplePosition(transform.position, out NavMeshHit hit, maxDistance: 10f, NavMesh.AllAreas)) { transform.position = leapStart; }
             agent.enabled = true;
             agent.Warp(transform.position);
             inSpecialAnimation = false;

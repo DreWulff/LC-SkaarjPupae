@@ -100,7 +100,10 @@ namespace SkaarjPupae.AI {
         /// </summary>
         /// <param name="state"></param>
         public void UpdateSquadState(SquadState state) {
-            foreach (PupaeAI pupae in squad) { pupae.squadState = (int)state; }
+            Debug.Log("Change state to :" + state);
+            foreach (PupaeAI pupae in squad) {
+                pupae.squadState = (int)state;
+            }
         }
 
         /// <summary>

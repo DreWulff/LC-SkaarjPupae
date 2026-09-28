@@ -50,15 +50,15 @@ namespace SkaarjPupae.AI {
                 timeSinceDamagingPlayer += Time.deltaTime;
             }
 
-            switch (currentBehaviourStateIndex) {
-                case (int)State.ROAMING:
-                case (int)State.SURVEILLING:
-                case (int)State.CHASING:
+            switch ((State)currentBehaviourStateIndex) {
+                case State.ROAMING:
+                case State.SURVEILLING:
+                case State.CHASING:
                     break;
-                case (int)State.SPOTTED:
+                case State.SPOTTED:
                     SpotUpdate();
                     break;
-                case (int)State.LEAPING:
+                case State.LEAPING:
                     LeapUpdate();
                     break;
             }
@@ -73,20 +73,20 @@ namespace SkaarjPupae.AI {
             }
 
             // Behaviour when in a squad.
-            switch (currentBehaviourStateIndex) {
-                case (int)State.ROAMING:
+            switch ((State)currentBehaviourStateIndex) {
+                case State.ROAMING:
                     if (isLeader) RoamAI();
                     else RoamFollowerAI();
                     break;
-                case (int)State.SURVEILLING:
+                case State.SURVEILLING:
                     SurveilAI();
                     break;
-                case (int)State.SPOTTED:
+                case State.SPOTTED:
                     return;
-                case (int)State.CHASING:
+                case State.CHASING:
                     ChaseAI();
                     return;
-                case (int)State.LEAPING:
+                case State.LEAPING:
                     LeapAI();
                     return;
             }

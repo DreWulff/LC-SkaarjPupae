@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-namespace SkaarjPupae.AI {
+﻿namespace SkaarjPupae.AI {
     partial class PupaeAI : EnemyAI {
         /// <summary>
         /// Behaviour entry point.
@@ -39,19 +37,11 @@ namespace SkaarjPupae.AI {
                 timeSinceLeap += AIIntervalTime;
             }
 
-            // If close enough to target, leap.
-            if (targetPlayer != null) {
-                if (Vector3.Distance(transform.position, targetPlayer.transform.position) < 10
-                    && Vector3.Distance(transform.position, targetPlayer.transform.position) > 5
-                    && timeSinceLeap >= _leapCooldown
-                    && targetPlayer.transform.position.y - transform.position.y < 2
-                    && CheckLineOfSightForPosition(targetPlayer.transform.position)) {
-                    StartLeap();
-                    return;
-                }
-
-                // If target is still in range:
-                agent.speed = 6f;
+            // Conditions
+            if (LeapCondition()) {
+                StartLeap();
+            } else {
+                SetCrawlingSpeed(6f);
                 SetDestinationToPosition(targetPlayer.transform.position);
             }
         }

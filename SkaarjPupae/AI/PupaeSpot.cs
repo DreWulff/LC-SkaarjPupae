@@ -21,7 +21,7 @@ namespace SkaarjPupae.AI {
             StopSearch(currentSearch);
             agent.enabled = true;
             inSpecialAnimation = false;
-            agent.speed = 0f;
+            SetCrawlingSpeed(0f);
             DoAnimationClientRpc(State.SPOTTED);
         }
 

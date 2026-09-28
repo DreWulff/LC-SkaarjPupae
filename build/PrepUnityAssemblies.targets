@@ -38,19 +38,19 @@
         <!-- Copy base required DLLs -->
         <Copy
             SourceFiles="@(UnityDLLs)"
-            DestinationFolder="$(UnityProjectDir)\Assets\Plugins"
+            DestinationFolder="$(UnityProjectPath)\Assets\Plugins"
             SkipUnchangedFiles="true" />
 
         <!-- Copy PluginDLLs defined in Directory.Build.targets -->
         <Copy
             SourceFiles="@(PluginDLLs)"
-            DestinationFolder="$(UnityProjectDir)\Assets\Plugins"
+            DestinationFolder="$(UnityProjectPath)\Assets\Plugins"
             SkipUnchangedFiles="true" />
 
         <!-- Copy resulting .dll of build -->
         <Copy
             SourceFiles="$(TargetPath)"
-            DestinationFolder="$(UnityProjectDir)\Assets\Plugins"
+            DestinationFolder="$(UnityProjectPath)\Assets\Plugins"
             SkipUnchangedFiles="true" />
 
     </Target>

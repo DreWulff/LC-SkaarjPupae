@@ -3,7 +3,7 @@ The building process defined in this project's [`.csproj`](../plugin/SkaarjPupae
 1. [`Directory.Build.props`](../Directory.Build.props): Checking if the user has defined the required properties for the rest of the process, with these properties being:
    1. `GamePath`: The absolute path to the game's root folder
    2. `ModdedPath`: The absolute path to either a modded version of the game or the Thunderstore/r2modman profile containing the required mods
-   3. `UnityProjectDir`: The absolute path of the Unity Project in which the user will work
+   3. `UnityProjectPath`: The absolute path of the Unity Project in which the user will work
 2. [`BuildSettings.prop`](./BuildSettings.props): Defining basic general properties
 3. [`PrepAssemblies.targets`](PrepAssemblies.targets): Copying the required references into a `libs` folder
    1. Base `.dll` files to be copied are defined in [`PrepAssemblies.targets`](PrepAssemblies.targets)

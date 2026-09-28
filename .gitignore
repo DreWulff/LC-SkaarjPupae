@@ -63,3 +63,5 @@ Thunderstore/
 User.Settings.props
 libs/
 .artifacts/
+/package/README.md
+/package/LICENSE

@@ -54,8 +54,7 @@ namespace SkaarjPupae.AI {
                 StartSurveillance();
             }
             else {
-                agent.speed = 3f;
-                SetCrawlingSpeed();
+                SetCrawlingSpeed(3f);
             }
         }
 
@@ -85,20 +84,21 @@ namespace SkaarjPupae.AI {
         private void FollowLeader() {
             if (Vector3.Distance(squadLeader.transform.position, transform.position) > 7) {
                 SetDestinationToPosition(squadLeader.transform.position);
-                agent.speed = 4.5f;
-                SetCrawlingSpeed();
+                SetCrawlingSpeed(4.5f);
             }
             else {
                 if (squadLeader.currentSearch.currentTargetNode != null) { SetDestinationToPosition(squadLeader.currentSearch.currentTargetNode.transform.position + new Vector3(Random.Range(-2f, 2f), 0, Random.Range(-2f, 2f))); }
                 else { SetDestinationToPosition(squadLeader.transform.position); }
-                agent.speed = 2.5f + Random.Range(-0.5f, 0.5f);
-                SetCrawlingSpeed();
+                SetCrawlingSpeed(2.5f + Random.Range(-0.5f, 0.5f));
             }
         }
 
         /// <summary>
         /// Sets the animation speed based on the speed of the agent.
         /// </summary>
-        private void SetCrawlingSpeed() { SetAnimationParameterClientRpc("CrawlSpeed", agent.speed / 3f); }
+        private void SetCrawlingSpeed(float speed) {
+            agent.speed = speed;
+            SetAnimationParameterClientRpc("CrawlSpeed", Mathf.Max(agent.speed / 3f, 1f));
+        }
     }
 }

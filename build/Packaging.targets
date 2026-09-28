@@ -3,10 +3,6 @@
 
 <!-- Generates a .zip file with all required files for publishing -->
 <Project>
-    <ItemGroup>
-        <PackageFiles Include="$(PackageDir)\*.*" />
-    </ItemGroup>
-
     <!-- Copy files to temporary folder before compressing into .zip -->
     <Target Name="CopyToPackage" AfterTargets="Build">
         <Message Text="Copying files into tmp directory" Importance="high" />
@@ -15,20 +11,27 @@
             <LicenseFile>$(RootPath)\LICENSE</LicenseFile>
         </PropertyGroup>
         <MakeDir Directories="$(TmpDir)" />
-        <!-- Copy README.md, LICENSE and resulting .dll file -->
+        <!-- Copy README.md and LICENSE -->
         <Copy
             SourceFiles="$(ReadmeFile)"
-            DestinationFolder="$(TmpDir)"
+            DestinationFolder="$(PackageDir)"
             SkipUnchangedFiles="true" />
         <Copy
             SourceFiles="$(LicenseFile)"
-            DestinationFolder="$(TmpDir)"
+            DestinationFolder="$(PackageDir)"
             SkipUnchangedFiles="true" />
+    </Target>
+
+    <!-- Copies files in package folder and resulting .dll -->
+    <Target Name="CopyToTemp" AfterTargets="CopyToPackage">
+        <ItemGroup>
+            <PackageFiles Include="$(PackageDir)\*.*" />
+        </ItemGroup>
+
         <Copy
             SourceFiles="$(TargetPath)"
             DestinationFolder="$(TmpDir)"
             SkipUnchangedFiles="true" />
-        <!-- Copies files in package folder -->
         <Copy
             SourceFiles="@(PackageFiles)"
             DestinationFolder="$(TmpDir)"
@@ -36,7 +39,7 @@
     </Target>
 
     <!-- Zip files for publishing -->
-    <Target Name="ZipPackage" AfterTargets="CopyToPackage">
+    <Target Name="ZipPackage" AfterTargets="CopyToTemp">
         <PropertyGroup>
             <ZipPath>$(ProjectDir)\$(AssemblyName).zip</ZipPath>
         </PropertyGroup>
@@ -44,12 +47,23 @@
         <Delete Files="$(ZipPath)" Condition="Exists('$(ZipPath)')" />
         <!-- Create zip -->
         <ZipDirectory
-            SourceDirectory="$(TmpDir)\"
+            SourceDirectory="$(TmpDir)"
             DestinationFile="$(ZipPath)" />
     </Target>
 
+    <Target Name="CopyToTestingProfile" AfterTargets="ZipPackage">
+        <ItemGroup>
+            <TempFiles Include="$(TmpDir)\*.*" />
+        </ItemGroup>
+
+        <Copy
+            SourceFiles="@(TempFiles)"
+            DestinationFolder="$(PluginsPath)\$(AssemblyName)"
+            SkipUnchangedFiles="true" />
+    </Target>
+
     <!-- Clean temporary folder -->
-    <Target Name="CleanPackage" AfterTargets="ZipPackage">
+    <Target Name="CleanPackage" AfterTargets="CopyToTestingProfile">
         <Message Text="Cleaning up tmp directory" Importance="high" />
         <RemoveDir Directories="$(TmpDir)\" />
     </Target>
